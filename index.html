@@ -348,12 +348,14 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on error: ')
             console.log(event);
             console.log('')
+            recognition.stop().then(recognition.start())
           }
 
           recognition.onnomatch = function (event) {
             console.log('Recognition on no match: ')
             console.log(event);
             console.log('')
+            recognition.stop().then(recognition.start())
           }
 
           recognition.onsoundend = function (event) {
