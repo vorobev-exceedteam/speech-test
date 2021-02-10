@@ -74,6 +74,7 @@
         }
 
         start(text = '') {
+          console.log('TTL STARTED')
           if (text) this.text = text;
           if (this.text === '') throw new Error('no words to synthesize');
           return navigator.mediaDevices.getUserMedia({
@@ -409,7 +410,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
 
             }
             recognition.stop();
-            state = 'start'
+            setTimeout(1500, recognition.start())
             function get_t(text) {
               return text.replace(/[^a-zA-Z]/gi, '').toLowerCase().trim('');
             }
@@ -427,9 +428,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           };
           recognition.onaudiostart = function (event) {
           };
-          if (state === 'start') {
             recognition.start();
-          }
         }
 
         start();
