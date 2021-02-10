@@ -376,6 +376,9 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           console.log('Starting...')
           output2.innerHTML = 'Произнесите `' + text + '`...';
           let res = '';
+          console.log('Recognizer: ')
+          console.log(recognition)
+          console.log('')
           recognition.onresult = function (event) {
             console.log('Recognition Result: ')
             console.log(event);
