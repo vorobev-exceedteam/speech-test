@@ -345,9 +345,10 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on end: ')
             console.log(event);
             console.log('')
-            if (state === 'error') {
-              recognition.start()
-            }
+            // if (state === 'error') {recognition.start()
+            //   recognition.start()
+            // }
+            recognition.start()
           }
           recognition.onerror = function (event) {
             console.log('Recognition on error: ')
