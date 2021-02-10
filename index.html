@@ -219,7 +219,7 @@
     <script>
       let g = searchToObject();
 
-      let state = 'idle';
+      let state = 'start';
 
       function regenerate() {
         let value = textarea.value.split('\n');
@@ -345,10 +345,9 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on end: ')
             console.log(event);
             console.log('')
-            // if (state === 'error') {recognition.start()
-            //   recognition.start()
-            // }
-            recognition.start()
+            if (state === 'error') {
+              recognition.start()
+            }
           }
           recognition.onerror = function (event) {
             console.log('Recognition on error: ')
@@ -410,7 +409,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
 
             }
             recognition.stop();
-
+            state = 'start'
             function get_t(text) {
               return text.replace(/[^a-zA-Z]/gi, '').toLowerCase().trim('');
             }
@@ -428,7 +427,9 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           };
           recognition.onaudiostart = function (event) {
           };
-          recognition.start();
+          if (state === 'start') {
+            recognition.start();
+          }
         }
 
         start();
