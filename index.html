@@ -410,7 +410,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
 
             }
             recognition.stop();
-            setTimeout(1500, recognition.start())
             function get_t(text) {
               return text.replace(/[^a-zA-Z]/gi, '').toLowerCase().trim('');
             }
