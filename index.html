@@ -35,57 +35,25 @@
     <script>
       class SpeechSynthesisRecorder {
         constructor({ text = '', utteranceOptions = {}, recorderOptions = {}, dataType = '' }) {
-          console.log('Inside the SpeechSynthesisRecorder constructor, text: ' + text)
-          console.log('Data type: ' + dataType)
           if (text === '') throw new Error('no words to synthesize');
           this.dataType = dataType;
           this.text = text;
           this.mimeType = MediaRecorder.isTypeSupported('audio/webm; codecs=opus')
             ? 'audio/webm; codecs=opus' : 'audio/ogg; codecs=opus';
-          console.log('MimeType: ')
-          console.log(this.mimeType);
-          console.log('')
-          console.log()
-          console.log(MediaRecorder.isTypeSupported('audio/webm; codecs=opus'))
           this.utterance = new SpeechSynthesisUtterance(this.text);
-          console.log('Speech Utterance')
-          console.log(this.utterance)
-          console.log('')
           this.speechSynthesis = window.speechSynthesis;
-          console.log('Speech synthesis')
-          console.log(this.speechSynthesis)
-          console.log('')
           this.mediaStream_ = new MediaStream();
-          console.log('Speech Media Stream')
-          console.log(this.mediaStream_)
-          console.log('')
           this.mediaSource_ = new MediaSource();
-          console.log('Media Source')
-          console.log(this.mediaSource_)
-          console.log('')
           this.mediaRecorder = new MediaRecorder(this.mediaStream_, {
             mimeType: this.mimeType,
             bitsPerSecond: 256 * 8 * 1024,
           });
-          console.log('Media Recorder')
-          console.log(this.mediaRecorder)
-          console.log('')
           this.audioContext = new AudioContext();
-          console.log('Audio Context')
-          console.log(this.audioContext)
-          console.log('')
           this.audioNode = new Audio();
-          console.log('Audio Node')
-          console.log(this.audioNode)
-          console.log('')
           this.chunks = [];
           if (utteranceOptions) {
             if (utteranceOptions.voice) {
               this.speechSynthesis.onvoiceschanged = e => {
-                console.log('Voice Changed: ')
-                console.log(e)
-                console.log('')
-
                 const voice = this.speechSynthesis.getVoices().find(({
                                                                        name: _name,
                                                                      }) => _name === utteranceOptions.voice);
@@ -106,8 +74,6 @@
         }
 
         start(text = '') {
-          console.log('Starting with text: ' + text)
-          console.log('')
           if (text) this.text = text;
           if (this.text === '') throw new Error('no words to synthesize');
           return navigator.mediaDevices.getUserMedia({
@@ -117,17 +83,8 @@
             // see https://bugzilla.mozilla.org/show_bug.cgi?id=934425, https://stackoverflow.com/q/33761770
             .then(stream => navigator.mediaDevices.enumerateDevices()
               .then(devices => {
-                console.log('Devices ')
-                console.log(devices)
-                console.log('')
                 const audiooutput = devices.find(device => device.kind == 'audiooutput');
-                console.log('Audio output')
-                console.log(audiooutput)
-                console.log('')
                 stream.getTracks().forEach(track => track.stop());
-                console.log('Tracks')
-                console.log(stream.getTracks())
-                console.log('')
                 if (audiooutput) {
                   const constraints = {
                     deviceId: {
@@ -150,16 +107,11 @@
                 resolve({ tts: this, data: this.mediaStream_ });
               }
               this.mediaRecorder.ondataavailable = event => {
-                console.log('Media recorder on data available')
-                console.log(event)
-                console.log('')
                 if (event.data.size > 0) {
                   this.chunks.push(event.data);
                 }
               };
               this.mediaRecorder.onstop = () => {
-                console.log('Media recorder on Stop')
-                console.log('')
                 track.stop();
                 this.mediaStream_.getAudioTracks()[0].stop();
                 this.mediaStream_.removeTrack(track);
@@ -354,6 +306,8 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
       function go(text_obj, cb) {
         let text = text_obj.split('|')[0];
         let text2 = text_obj.split('|')[1];
+        console.log(text)
+        console.log(text2)
 
         function on_cb() {
           succ_count.push(iter_num);
@@ -368,22 +322,11 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
 
         document.querySelector('h1').innerHTML = text;
         var recognition = new webkitSpeechRecognition();
-        // recognition.lang = 'en-US'
         recognition.continuous = true;
-
-        //recognition.interimResults = true;
+        recognition.lang = 'en-US'
         function start() {
-          console.log('Starting...')
           output2.innerHTML = 'Произнесите `' + text + '`...';
           let res = '';
-          console.log('Recognizer: ')
-          console.log(recognition)
-          console.log('')
-          console.log('User Media')
-          console.log(navigator.mediaDevices.getUserMedia({
-            audio: true,
-            microphone: true,
-          }))
           recognition.onaudioend = function (event) {
             console.log('Recognition on audio end: ')
             console.log(event);
@@ -426,7 +369,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           }
 
           recognition.onsoundstart = function (event) {
-            console.log('Recognition on sound end: ')
+            console.log('Recognition on sound start: ')
             console.log(event);
             console.log('')
           }
@@ -436,7 +379,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('')
           }
           recognition.onspeechstart = function (event) {
-            console.log('Recognition on speech end: ')
+            console.log('Recognition on speech start: ')
             console.log(event);
             console.log('')
           }
@@ -446,10 +389,10 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('')
           }
           recognition.onresult = function (event) {
-            console.log('Recognition Result: ')
+            console.log('Recognition on result')
             console.log(event);
-            console.log('')
             output.innerHTML = '';
+
             for (var i = 0; i < event.results.length; i++) {
               res = event.results[i][0].transcript;
               //show res;;//
@@ -457,7 +400,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               output2.innerHTML = 'Ваша фраза распознана как:';
 
             }
-            // recognition.stop();
+            recognition.stop();
 
             function get_t(text) {
               return text.replace(/[^a-zA-Z]/gi, '').toLowerCase().trim('');
@@ -473,6 +416,8 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               }
             });
 
+          };
+          recognition.onaudiostart = function (event) {
           };
           recognition.start();
         }
