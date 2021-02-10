@@ -74,7 +74,6 @@
         }
 
         start(text = '') {
-          console.log('TTL STARTED')
           if (text) this.text = text;
           if (this.text === '') throw new Error('no words to synthesize');
           return navigator.mediaDevices.getUserMedia({
@@ -417,9 +416,8 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             test(text, () => {
               if (get_t(text) == get_t(res)) {
                 on_cb();
-              } else if (++iter_num > 3) {
-                on_cb();
-              } else {
+              }
+              else {
                 start();
               }
             });
