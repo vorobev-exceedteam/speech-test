@@ -384,6 +384,61 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             audio: true,
             microphone: true,
           }))
+          recognition.onaudioend = function (event) {
+            console.log('Recognition on audio end: ')
+            console.log(event);
+            console.log('')
+          }
+          recognition.onend = function (event) {
+            console.log('Recognition on end: ')
+            console.log(event);
+            console.log('')
+            // recognition.start();
+          }
+          recognition.onerror = function (event) {
+            console.log('Recognition on error: ')
+            console.log(event);
+            console.log('')
+          }
+
+          recognition.onnomatch = function (event) {
+            console.log('Recognition on no match: ')
+            console.log(event);
+            console.log('')
+          }
+
+          recognition.onsoundend = function (event) {
+            console.log('Recognition on sound end: ')
+            console.log(event);
+            console.log('')
+          }
+
+          recognition.onsoundstart = function (event) {
+            console.log('Recognition on sound start: ')
+            console.log(event);
+            console.log('')
+          }
+
+          recognition.onsoundstart = function (event) {
+            console.log('Recognition on sound start: ')
+            console.log(event);
+            console.log('')
+          }
+          recognition.onspeechend = function (event) {
+            console.log('Recognition on speech end: ')
+            console.log(event);
+            console.log('')
+          }
+          recognition.onspeechstart = function (event) {
+            console.log('Recognition on speech end: ')
+            console.log(event);
+            console.log('')
+          }
+          recognition.onstart = function (event) {
+            console.log('Recognition on start: ')
+            console.log(event);
+            console.log('')
+          }
           recognition.onresult = function (event) {
             console.log('Recognition Result: ')
             console.log(event);
@@ -396,7 +451,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               output2.innerHTML = 'Ваша фраза распознана как:';
 
             }
-            recognition.stop();
+            // recognition.stop();
 
             function get_t(text) {
               return text.replace(/[^a-zA-Z]/gi, '').toLowerCase().trim('');
@@ -412,10 +467,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               }
             });
 
-          };
-          recognition.onaudiostart = function (event) {
-            console.log('On audio start')
-            console.log(event)
           };
           recognition.start();
         }
