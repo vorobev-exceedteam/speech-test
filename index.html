@@ -379,6 +379,11 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           console.log('Recognizer: ')
           console.log(recognition)
           console.log('')
+          console.log('User Media')
+          console.log(navigator.mediaDevices.getUserMedia({
+            audio: true,
+            microphone: true,
+          }))
           recognition.onresult = function (event) {
             console.log('Recognition Result: ')
             console.log(event);
