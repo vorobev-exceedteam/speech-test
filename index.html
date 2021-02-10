@@ -388,12 +388,18 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on audio end: ')
             console.log(event);
             console.log('')
+            // recognition.start()
+          }
+          recognition.onaudiostart = function (event) {
+            console.log('Recognition on audio start: ')
+            console.log(event);
+            console.log('')
+            // recognition.start()
           }
           recognition.onend = function (event) {
             console.log('Recognition on end: ')
             console.log(event);
             console.log('')
-            // recognition.start();
           }
           recognition.onerror = function (event) {
             console.log('Recognition on error: ')
@@ -420,7 +426,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           }
 
           recognition.onsoundstart = function (event) {
-            console.log('Recognition on sound start: ')
+            console.log('Recognition on sound end: ')
             console.log(event);
             console.log('')
           }
