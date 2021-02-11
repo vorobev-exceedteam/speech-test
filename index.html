@@ -52,6 +52,16 @@
           this.audioNode = new Audio();
           this.chunks = [];
           if (utteranceOptions) {
+            if (utteranceOptions.voice) {
+              this.speechSynthesis.onvoiceschanged = e => {
+                const voice = this.speechSynthesis.getVoices().find(({
+                                                                       name: _name,
+                                                                     }) => _name === utteranceOptions.voice);
+                this.utterance.voice = voice;
+                console.log(voice, this.utterance);
+              };
+              this.speechSynthesis.getVoices();
+            }
             let {
               lang, rate, pitch,
             } = utteranceOptions;
@@ -374,6 +384,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           let ttsRecorder = new SpeechSynthesisRecorder({
             text,
             utteranceOptions: {
+              voice: 'english-us espeak',
               lang: 'en-US',
               pitch: .7,
               volume: 1,
