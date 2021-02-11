@@ -34,6 +34,7 @@
 </body>
 <head>
     <script>
+      var recognition = new webkitSpeechRecognition();
         function replay() {
           console.log('replaying')
           var speechSynthesis = window.speechSynthesis;
@@ -208,15 +209,10 @@
               console.log(this)
               // this.speechSynthesis.cancel();
               // this.speechSynthesis.resume();
-              this.speechSynthesis.speak(this.utterance);
-              setTimeout(() => {
-                if (!this.speechSynthesis.speaking) {
-                  console.log('I am not Speaking')
-                } else {
-                  console.log('I am Speaking')
-                }
 
-              }, 50)
+              setTimeout(() => this.speechSynthesis.speak(this.utterance)
+
+              , 100)
               console.log('Object itself after speaking')
               console.log(this)
             }));
@@ -414,7 +410,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
         var output2 = document.getElementById('output2');
 
         document.querySelector('h1').innerHTML = text;
-        var recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
         recognition.lang = 'en-US'
         function start() {
