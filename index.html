@@ -71,6 +71,36 @@
             });
           }
           this.audioNode.controls = 'controls';
+
+          this.utterance.onboundary = (e) => {
+            console.log('On boundary utterance')
+            console.log(e)
+          }
+
+          this.utterance.onerror = (e) => {
+            console.log('On error utterance')
+            console.log(e)
+          }
+
+          this.utterance.onmark = (e) => {
+            console.log('On mark utterance')
+            console.log(e)
+          }
+
+          this.utterance.onpause = (e) => {
+            console.log('On pause utterance')
+            console.log(e)
+          }
+
+          this.utterance.onresume= (e) => {
+            console.log('On resume utterance')
+            console.log(e)
+          }
+
+          this.utterance.onstart= (e) => {
+            console.log('On start utterance')
+            console.log(e)
+          }
           // document.body.appendChild(this.audioNode)
         }
 
@@ -85,13 +115,7 @@
             // see https://bugzilla.mozilla.org/show_bug.cgi?id=934425, https://stackoverflow.com/q/33761770
             .then(stream => navigator.mediaDevices.enumerateDevices()
               .then(devices => {
-                console.log('Devices');
-                console.log(devices);
                 const audiooutput = devices.find(device => device.kind == 'audiooutput');
-                console.log('Audio output')
-                console.log(audiooutput)
-                console.log('Stream')
-                console.log(stream)
                 stream.getTracks().forEach(track => track.stop());
                 if (audiooutput) {
                   const constraints = {
@@ -108,25 +132,15 @@
                 });
               }))
             .then(stream => new Promise(resolve => {
-              console.log('After get user media')
-              console.log('Stream')
-              console.log(stream)
               const track = stream.getAudioTracks()[0];
-              console.log('Track')
-              console.log(track)
               this.mediaStream_.addTrack(track);
               // return the current `MediaStream`
               if (this.dataType && this.dataType === 'mediaStream') {
-                console.log('if datatype = mediaStream')
                 resolve({ tts: this, data: this.mediaStream_ });
               }
               this.mediaRecorder.ondataavailable = event => {
-                console.log('Media recorder ondataavailable')
-                console.log(event)
                 if (event.data.size > 0) {
                   this.chunks.push(event.data);
-                  console.log('Updated chunks')
-                  console.log(this.chunks)
                 }
               };
               this.mediaRecorder.onstop = () => {
@@ -351,84 +365,33 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
         recognition.lang = 'en-US'
         function start() {
           let res = '';
-          recognition.onaudioend = function (event) {
-            console.log('Recognition on audio end: ')
-            console.log(event);
-            console.log('')
-            // recognition.start()
-          }
-          recognition.onaudiostart = function (event) {
-            console.log('Recognition on audio start: ')
-            console.log(event);
-            console.log('')
-            // recognition.start()
-          }
+          output2.innerHTML = 'Произнесите `' + text + '`...';
+
           recognition.onend = function (event) {
-            console.log('Recognition on end: ')
-            console.log(event);
-            console.log('')
             if (state === 'error') {
               recognition.start()
             }
           }
           recognition.onerror = function (event) {
-            console.log('Recognition on error: ')
-            console.log(event);
-            console.log('');
             output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
             state = 'error'
           }
 
           recognition.onnomatch = function (event) {
-            console.log('Recognition on no match: ')
-            console.log(event);
-            console.log('')
             output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
             state = 'error'
           }
 
-          recognition.onsoundend = function (event) {
-            console.log('Recognition on sound end: ')
-            console.log(event);
-            console.log('')
-          }
 
-          recognition.onsoundstart = function (event) {
-            console.log('Recognition on sound start: ')
-            console.log(event);
-            console.log('')
-          }
-
-          recognition.onsoundstart = function (event) {
-            console.log('Recognition on sound start: ')
-            console.log(event);
-            console.log('')
-          }
-          recognition.onspeechend = function (event) {
-            console.log('Recognition on speech end: ')
-            console.log(event);
-            console.log('')
-          }
-          recognition.onspeechstart = function (event) {
-            console.log('Recognition on speech start: ')
-            console.log(event);
-            console.log('')
-          }
           recognition.onstart = function (event) {
-            console.log('Recognition on start: ')
-            console.log(event);
-            console.log('')
             output2.innerHTML = 'Произнесите `' + text + '`...';
             state = 'idle';
           }
           recognition.onresult = function (event) {
-            console.log('Recognition on result')
-            console.log(event);
             output.innerHTML = '';
 
             for (var i = 0; i < event.results.length; i++) {
               res = event.results[i][0].transcript;
-              //show res;;//
               output.innerHTML = res;
               output2.innerHTML = 'Ваша фраза распознана как:';
 
