@@ -368,7 +368,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log(event);
             console.log('')
             if (state === 'error') {
-              output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
               recognition.start()
             }
           }
@@ -376,6 +375,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on error: ')
             console.log(event);
             console.log('');
+            output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
             state = 'error'
           }
 
@@ -383,6 +383,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             console.log('Recognition on no match: ')
             console.log(event);
             console.log('')
+            output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
             state = 'error'
           }
 
