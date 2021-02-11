@@ -34,7 +34,7 @@
 <head>
     <script>
       class SpeechSynthesisRecorder {
-        constructor({ text = '', utteranceOptions = {}, recorderOptions = {}, audioContext, dataType = '' }) {
+        constructor({ text = '', utteranceOptions = {}, recorderOptions = {}, dataType = '' }) {
           if (text === '') throw new Error('no words to synthesize');
           this.dataType = dataType;
           this.text = text;
@@ -44,7 +44,7 @@
           this.speechSynthesis = window.speechSynthesis;
           this.mediaStream_ = new MediaStream();
           this.mediaSource_ = new MediaSource();
-          this.audioContext = audioContext;
+          this.audioContext = new AudioContext();
           this.audioNode = new Audio()
           this.mediaRecorder = new MediaRecorder(this.mediaStream_, {
             mimeType: this.mimeType,
@@ -137,6 +137,7 @@
           console.log('Text: '+ text)
           if (text) this.text = text;
           if (this.text === '') throw new Error('no words to synthesize');
+          this.audioContext.resume();
           return navigator.mediaDevices.getUserMedia({
             audio: true,
           })
@@ -284,8 +285,6 @@
     </script>
     <script>
       let g = searchToObject();
-      audioContext = new AudioContext();
-
       let state = 'start';
 
       function regenerate() {
@@ -458,7 +457,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               pitch: .7,
               volume: 1,
               rate: 1,
-            }, audioContext
+            },
           });
 
           ttsRecorder.start()
