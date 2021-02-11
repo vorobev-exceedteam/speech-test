@@ -27,7 +27,7 @@
 <small style="margin-top: 25px; display:  block;"></small>
 <div id="output"></div>
 <textarea name="" id="" cols="30" rows="10" style="margin-top: 20px;"></textarea>
-<div>
+<div id="buttons">
     <button onclick="regenerate()">Пересобрать</button>
 </div>
 </body>
@@ -192,6 +192,14 @@
               console.log('Object itself before speaking')
               console.log(this)
               this.speechSynthesis.speak(this.utterance);
+              setTimeout(() => {
+                if (!this.speechSynthesis.speaking) {
+                  console.log('I am not Speaking')
+                } else {
+                  console.log('I am Speaking')
+                }
+
+              }, 50)
               console.log('Object itself after speaking')
               console.log(this)
             }));
