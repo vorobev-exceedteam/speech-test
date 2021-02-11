@@ -41,9 +41,7 @@
           this.mimeType = MediaRecorder.isTypeSupported('audio/webm; codecs=opus')
             ? 'audio/webm; codecs=opus' : 'audio/ogg; codecs=opus';
           this.utterance = new SpeechSynthesisUtterance(this.text);
-          this.speechSynthesis = window.speechSynthesis;
-          console.log('Voices')
-          console.log(this.speechSynthesis.getVoices())
+          this.speechSynthesis = window.webkitSpeechRecognition || window.speechSynthesis;
           this.mediaStream_ = new MediaStream();
           this.mediaSource_ = new MediaSource();
           this.audioContext = new AudioContext();
@@ -193,8 +191,8 @@
               };
               console.log('Object itself before speaking')
               console.log(this)
-              this.speechSynthesis.cancel();
-              this.speechSynthesis.resume();
+              // this.speechSynthesis.cancel();
+              // this.speechSynthesis.resume();
               this.speechSynthesis.speak(this.utterance);
               setTimeout(() => {
                 if (!this.speechSynthesis.speaking) {
