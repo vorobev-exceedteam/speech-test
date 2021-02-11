@@ -52,16 +52,6 @@
           this.audioNode = new Audio();
           this.chunks = [];
           if (utteranceOptions) {
-            if (utteranceOptions.voice) {
-              this.speechSynthesis.onvoiceschanged = e => {
-                const voice = this.speechSynthesis.getVoices().find(({
-                                                                       name: _name,
-                                                                     }) => _name === utteranceOptions.voice);
-                this.utterance.voice = voice;
-                console.log(voice, this.utterance);
-              };
-              this.speechSynthesis.getVoices();
-            }
             let {
               lang, rate, pitch,
             } = utteranceOptions;
@@ -218,6 +208,7 @@
     </script>
     <script>
       let g = searchToObject();
+      let state = 'start';
 
       function regenerate() {
         let value = textarea.value.split('\n');
@@ -321,11 +312,30 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
         document.querySelector('h1').innerHTML = text;
         var recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
+        recognition.lang = 'en-US';
 
         //recognition.interimResults = true;
         function start() {
           output2.innerHTML = 'Произнесите `' + text + '`...';
           let res = '';
+          recognition.onend = function (event) {
+            if (state === 'error') {
+              recognition.start()
+            }
+          }
+          recognition.onerror = function (event) {
+            output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
+            state = 'error'
+          }
+
+          recognition.onnomatch = function (event) {
+            output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
+            state = 'error'
+          }
+          recognition.onstart = function (event) {
+            output2.innerHTML = 'Произнесите `' + text + '`...';
+            state = 'idle';
+          }
           recognition.onresult = function (event) {
             console.log(event);
             output.innerHTML = '';
@@ -366,7 +376,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
           let ttsRecorder = new SpeechSynthesisRecorder({
             text,
             utteranceOptions: {
-              voice: 'english-us espeak',
               lang: 'en-US',
               pitch: .7,
               volume: 1,
@@ -381,8 +390,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
         }
 
       }
-
-
     </script>
 </head>
 </html>
