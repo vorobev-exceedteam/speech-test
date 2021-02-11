@@ -92,8 +92,6 @@
                 this.utterance.voice = voice;
                 console.log(voice, this.utterance);
               };
-              this.speechSynthesis.cancel();
-              this.speechSynthesis.resume();
               this.speechSynthesis.getVoices();
             }
             let {
@@ -195,6 +193,8 @@
               };
               console.log('Object itself before speaking')
               console.log(this)
+              this.speechSynthesis.cancel();
+              this.speechSynthesis.resume();
               this.speechSynthesis.speak(this.utterance);
               setTimeout(() => {
                 if (!this.speechSynthesis.speaking) {
