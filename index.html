@@ -37,6 +37,7 @@
       var recognition = new webkitSpeechRecognition();
         function replay() {
           console.log('replaying')
+          recognition.stop()
           var speechSynthesis = window.speechSynthesis;
           var word = document.getElementsByTagName('h1')[0].innerHTML;
           var utterance = new SpeechSynthesisUtterance(word || 'I don\'t recognized any text yet');
@@ -45,6 +46,7 @@
           utterance.volume = 1
           utterance.rate = 1
           speechSynthesis.speak(utterance)
+          recognition.start()
         }
     </script>
     <script>
