@@ -53,6 +53,7 @@
           this.chunks = [];
           if (utteranceOptions) {
             if (utteranceOptions.voice) {
+              console.log(this.speechSynthesis)
               this.speechSynthesis.onvoiceschanged = e => {
                 const voice = this.speechSynthesis.getVoices().find(({
                                                                        name: _name,
@@ -74,6 +75,7 @@
         }
 
         start(text = '') {
+          console.log('Text: '+ text)
           if (text) this.text = text;
           if (this.text === '') throw new Error('no words to synthesize');
           return navigator.mediaDevices.getUserMedia({
@@ -83,7 +85,13 @@
             // see https://bugzilla.mozilla.org/show_bug.cgi?id=934425, https://stackoverflow.com/q/33761770
             .then(stream => navigator.mediaDevices.enumerateDevices()
               .then(devices => {
+                console.log('Devices');
+                console.log(devices);
                 const audiooutput = devices.find(device => device.kind == 'audiooutput');
+                console.log('Audio output')
+                console.log(audiooutput)
+                console.log('Stream')
+                console.log(stream)
                 stream.getTracks().forEach(track => track.stop());
                 if (audiooutput) {
                   const constraints = {
@@ -100,18 +108,28 @@
                 });
               }))
             .then(stream => new Promise(resolve => {
+              console.log('After get user media')
+              console.log('Stream')
+              console.log(stream)
               const track = stream.getAudioTracks()[0];
+              console.log('Track')
+              console.log(track)
               this.mediaStream_.addTrack(track);
               // return the current `MediaStream`
               if (this.dataType && this.dataType === 'mediaStream') {
                 resolve({ tts: this, data: this.mediaStream_ });
               }
               this.mediaRecorder.ondataavailable = event => {
+                console.log('Media recorder ondataavailable')
+                console.log(event)
                 if (event.data.size > 0) {
                   this.chunks.push(event.data);
+                  console.log('Updated chunks')
+                  console.log(this.chunks)
                 }
               };
               this.mediaRecorder.onstop = () => {
+                console.log('mediaRecorder on stop')
                 track.stop();
                 this.mediaStream_.getAudioTracks()[0].stop();
                 this.mediaStream_.removeTrack(track);
@@ -432,7 +450,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
 
         function test(text, cb) {
           // const data = document.querySelector('textarea');
-          let ttsRecorder = new SpeechSynthesisRecorder({
+          var ttsRecorder = new SpeechSynthesisRecorder({
             text,
             utteranceOptions: {
               voice: 'english-us espeak',
