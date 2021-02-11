@@ -29,9 +29,23 @@
 <textarea name="" id="" cols="30" rows="10" style="margin-top: 20px;"></textarea>
 <div id="buttons">
     <button onclick="regenerate()">Пересобрать</button>
+    <button onclick="replay()">Проиграть звук</button>
 </div>
 </body>
 <head>
+    <script>
+        function replay() {
+          console.log('replaying')
+          var speechSynthesis = window.speechSynthesis;
+          var word = document.getElementsByTagName('h1')[0].innerHTML;
+          var utterance = new SpeechSynthesisUtterance(word || 'I don\'t recognized any text yet');
+          utterance.lang = 'en-US'
+          utterance.pitch = 0.7
+          utterance.volume = 1
+          utterance.rate = 1
+          speechSynthesis.speak(utterance)
+        }
+    </script>
     <script>
       class SpeechSynthesisRecorder {
         constructor({ text = '', utteranceOptions = {}, recorderOptions = {}, dataType = '' }) {
@@ -41,7 +55,8 @@
           this.mimeType = MediaRecorder.isTypeSupported('audio/webm; codecs=opus')
             ? 'audio/webm; codecs=opus' : 'audio/ogg; codecs=opus';
           this.utterance = new SpeechSynthesisUtterance(this.text);
-          this.speechSynthesis = window.webkitSpeechRecognition || window.speechSynthesis;
+          this.utterance.lang = 'en-US'
+          this.speechSynthesis = window.speechSynthesis;
           this.mediaStream_ = new MediaStream();
           this.mediaSource_ = new MediaSource();
           this.audioContext = new AudioContext();
@@ -461,6 +476,7 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             text,
             utteranceOptions: {
               lang: 'en-US',
+              voice: 'english-us espeak',
               pitch: .7,
               volume: 1,
               rate: 1,
