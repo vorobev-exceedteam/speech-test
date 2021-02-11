@@ -42,6 +42,8 @@
             ? 'audio/webm; codecs=opus' : 'audio/ogg; codecs=opus';
           this.utterance = new SpeechSynthesisUtterance(this.text);
           this.speechSynthesis = window.speechSynthesis;
+          console.log('Voices')
+          console.log(this.speechSynthesis.getVoices())
           this.mediaStream_ = new MediaStream();
           this.mediaSource_ = new MediaSource();
           this.audioContext = new AudioContext();
@@ -418,8 +420,6 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
             output2.innerHTML = 'Не могу распознать текст, попробуйте еще раз';
             state = 'error'
           }
-
-
           recognition.onstart = function (event) {
             output2.innerHTML = 'Произнесите `' + text + '`...';
             state = 'idle';
@@ -467,7 +467,8 @@ ${arr.join('<div></div>')}<div><button onclick="location.reload()">Start again</
               rate: 1,
             },
           });
-
+          console.log('Tts recorder')
+          console.log(ttsRecorder)
           ttsRecorder.start()
             .then(cb)
             .catch((err)=> {
