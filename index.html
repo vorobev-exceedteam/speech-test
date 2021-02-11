@@ -92,6 +92,8 @@
                 this.utterance.voice = voice;
                 console.log(voice, this.utterance);
               };
+              this.speechSynthesis.cancel();
+              this.speechSynthesis.resume();
               this.speechSynthesis.getVoices();
             }
             let {
