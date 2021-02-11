@@ -50,6 +50,27 @@
             mimeType: this.mimeType,
             bitsPerSecond: 256 * 8 * 1024,
           });
+          this.mediaSource_.onsourceclose = (e) => {
+            console.log('Media source on source close')
+            console.log(e)
+          }
+          this.mediaSource_.onsourceended = (e) => {
+            console.log('Media source on source ended')
+            console.log(e)
+          }
+          this.mediaSource_.onsourceopen = (e) => {
+            console.log('Media source on source open')
+            console.log(e)
+          }
+          this.mediaStream_.onaddtrack = (e) => {
+            console.log('Media stream on add track')
+            console.log(e)
+          }
+          this.mediaStream_.onremovetrack = (e) => {
+            console.log('Media stream on add track')
+            console.log(e)
+          }
+
           this.mediaRecorder.onerror = (e) => {
             console.log('Media recorder on error')
             console.log(e)
